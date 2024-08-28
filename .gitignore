@@ -1,0 +1,19 @@
+# .gitignore files
+
+# Ignore noiseCleanedPASS directory
+noiseCleanedPASS/
+#
+# # Ignore noiseCleanedtemp directory
+noiseCleanedtemp/
+#
+# # Ignore etc directory
+etc/
+#
+# # Ignore DomainSeparated directory
+DomainSeparated/
+#
+# # Ignore rawPASS directory
+rawPASS/
+
+
+__pycache__/
