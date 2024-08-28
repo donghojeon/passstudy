@@ -19,5 +19,5 @@ def shorten_filenames(directory):
             print(f"Renamed: {filename} -> {new_name}")
 
 # 경로를 적절히 설정하세요
-directory = '/mnt/pentapass/updated_codes/passdata'
+directory = '/mnt/pentapass/pass_research/1.noiseclean/rawdata/'
 shorten_filenames(directory)

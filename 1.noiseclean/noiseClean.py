@@ -93,8 +93,8 @@ def display_cleaned_file_sizes(file, output_dir):
         logging.error(f"Error reading {path}: {e}")
 
 def main():
-    input_dir = './passdata/temp/'  # Adjusted based on your path
-    output_dir = './NoiseCleaned/'
+    input_dir = './rawdata/'  # Adjusted based on your path
+    output_dir = './noiseCleaned/'
     colnames = ['ID', 'Domain', 'PW']
 
     # Ensure the output directory exists
