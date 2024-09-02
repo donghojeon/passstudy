@@ -5,3 +5,14 @@
 #
 1.noiseclean/rawdata
 1.noiseclean/noiseCleaned
+
+
+2.classification/domainSeparated/
+2.classification/domainSeparated2/
+2.classification/domainSeparated3/
+2.classification/domainSeparated4/
+2.classification/noiseCleanedTmp/
+
+3.statistics/statistics_processing.log
+3.statistics/statLog.log
+

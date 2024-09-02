@@ -3,7 +3,7 @@ from statistics_functions import process_pickle_file, save_to_excel, aggregate_f
 from concurrent.futures import ProcessPoolExecutor
 
 def main():
-    base_dir = './DomainSeparated/'
+    base_dir = '../2.classification/domainSeparated4/'
     output_file = './domain_statistics.xlsx'
 
     # TLD 하위 폴더 및 대륙별 폴더 목록

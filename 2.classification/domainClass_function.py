@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import gc
 import re
+import time  # 시간을 측정하기 위한 모듈 추가
 from continent_mapping import continent_mapping
 from multiprocessing import Lock
 
@@ -37,12 +38,22 @@ def process_file(filename, data_dir, domain_dir):
     """파일을 처리하여 도메인을 분류"""
     print(f"Processing file: {filename}")
     file_path = os.path.join(data_dir, filename)
+    
+    start_time = time.time()  # 작업 시작 시간 기록
 
     try:
         data = pd.read_pickle(file_path)
+        print(f"Successfully loaded file: {filename}")
     except UnicodeDecodeError:
         print(f"UnicodeDecodeError encountered. Trying with 'latin1' encoding for file: {filename}")
         data = pd.read_pickle(file_path, encoding='latin1')  # 'latin1'으로 재시도
+    except Exception as e:
+        print(f"Failed to load file: {filename}. Error: {e}")
+        return
+    
+    load_time = time.time() - start_time
+    if load_time > 10:  # 로드 시간이 10초를 초과할 경우 경고 메시지 출력
+        print(f"Warning: Loading file {filename} took {load_time:.2f} seconds")
 
     # 도메인별 데이터 저장
     for domain, group in data.groupby('Domain'):
@@ -72,16 +83,21 @@ def process_file(filename, data_dir, domain_dir):
         
         # Lock을 사용하여 파일 접근을 제어
         with lock:
-            if os.path.exists(domain_file):
-                try:
+            try:
+                if os.path.exists(domain_file):
                     existing_data = pd.read_pickle(domain_file)
                     group = pd.concat([existing_data, group])
-                except (EOFError, KeyError, ValueError):
-                    print(f"Error reading {domain_file}. Skipping this file.")
-                    continue  # 파일 읽기 오류가 발생하면 스킵
+
+                group.to_pickle(domain_file)
+
+            except (EOFError, KeyError, ValueError) as e:
+                print(f"Error reading or writing {domain_file}. Skipping this domain. Error: {e}")
+                continue  # 파일 읽기 또는 쓰기 오류가 발생하면 스킵
             
-            group.to_pickle(domain_file)
-    
     # 메모리 해제를 위해 데이터프레임 삭제
     del data
     gc.collect()
+
+    total_time = time.time() - start_time  # 총 작업 시간 계산
+    
+    print(f"Finished processing file: {filename}")
